@@ -10,7 +10,7 @@ from datetime import timedelta
 
 app = Flask(__name__)
 
-app.config["JWT_SECRET_KEY"] = 'secret'
+app.config["JWT_SECRET_KEY"] = 'secret' # TODO move to an env file
 jwt = JWTManager(app)
 
 client = MongoClient('localhost', 27017)
