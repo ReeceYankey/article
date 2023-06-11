@@ -6,6 +6,7 @@ import Article, {loader as articleLoader} from './routes/article'
 import reportWebVitals from './reportWebVitals';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
+// TODO add error page
 const router = createBrowserRouter([
   {
     path: "/",
