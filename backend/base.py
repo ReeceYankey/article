@@ -4,6 +4,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from pymongo import MongoClient
 import pymongo
 from bson.objectid import ObjectId
+from bson.errors import InvalidId
 import time
 from datetime import timedelta
 
@@ -86,7 +87,7 @@ def post_comment():
     return jsonify({"msg": "Successfully posted comment"}), 200
 
 
-@app.route("/get_comments", methods=['GET'])
+@app.route("/get_comments", methods=['POST'])
 def get_comments():
     data = request.get_json()
     if 'article_id' not in data:
@@ -101,16 +102,21 @@ def get_comments():
     return jsonify(matching_comments), 200
 
 
-@app.route("/get_article", methods=['GET'])
-def get_article():
-    data = request.get_json()
-    if 'article_id' not in data:
-        return jsonify({"msg": "Missing article id"}), 400
-    article_id = data['article_id']
+@app.route("/get_article/<article_id>", methods=['GET'])
+def get_article(article_id):
+    # data = request.get_json()
+    # if 'article_id' not in data:
+    #     return jsonify({"msg": "Missing article id"}), 400
+    # article_id = data['article_id']
+
+    try:
+        id = ObjectId(article_id)
+    except(InvalidId):
+        return jsonify({"msg": "Invalid article id"}), 404
 
     article = articles.find_one({"_id":ObjectId(article_id)})
     if article is None:
-        return jsonify({"msg": "Invalid article id"}), 401
+        return jsonify({"msg": "Invalid article id"}), 404
     article['article_id'] = str(article.pop('_id'))
     return jsonify(article), 200
 
@@ -122,6 +128,8 @@ def list_articles():
     for article in all_articles:
         article['article_id'] = str(article.pop('_id'))
         article.pop('content')
+    
+    print(all_articles)
 
     return jsonify(all_articles), 200
 
