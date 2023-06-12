@@ -1,10 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import Root, {loader as rootLoader} from './routes/root';
-import Article, {loader as articleLoader} from './routes/article'
 import reportWebVitals from './reportWebVitals';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import Root, {loader as rootLoader} from './routes/root';
+import Article, {loader as articleLoader} from './routes/article'
+import Login from './routes/login';
 
 // TODO add error page
 const router = createBrowserRouter([
@@ -17,7 +18,11 @@ const router = createBrowserRouter([
     path: "/article/:article_id",
     loader: articleLoader,
     element: <Article />,
-  }
+  },
+  {
+    path: "/login",
+    element: <Login />,
+  },
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

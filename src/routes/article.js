@@ -1,7 +1,9 @@
 import { useLoaderData } from 'react-router-dom';
 import './root.css';
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { AppBar, Box, Button, Container, Toolbar, Typography } from '@mui/material';
+import { NavBar } from './shared';
 
 export async function loader({params}) {
   const res = await axios.get('/get_article/' + params.article_id);
@@ -42,16 +44,20 @@ function CommentSection({article_id}) {
   );
 }
 
+
 export default function Article() {
   const article = useLoaderData();
 
   return (
-    <div className="App">
-      <h1>{article.title}</h1>
-      <div>By: {article.author}</div>
-      <p> {epochToString(article.creation_date)} </p>
-      <p> {article.content} </p>
-      <CommentSection article_id={article.article_id} />
+    <div >
+      <NavBar />
+      <Container>
+        <h1>{article.title}</h1>
+        <div>By: {article.author}</div>
+        <p> {epochToString(article.creation_date)} </p>
+        <p> {article.content} </p>
+        <CommentSection article_id={article.article_id} />
+      </Container>
     </div>
   );
 }

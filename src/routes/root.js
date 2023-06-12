@@ -1,6 +1,7 @@
 import { useLoaderData } from 'react-router-dom';
 import './root.css';
 import axios from 'axios';
+import { NavBar } from './shared';
 
 export async function loader(){
   const res = await axios.get('/list_articles')
@@ -13,7 +14,8 @@ export default function Root() {
   const data = useLoaderData();
 
   return (
-    <div className="App">
+    <div>
+      <NavBar />
       {data.map((e, index)=>{
         return <div key={index}>
           <p>{e.title} - {e.author} - {e.article_id}</p>
