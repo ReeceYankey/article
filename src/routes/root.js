@@ -1,7 +1,8 @@
 import { useLoaderData } from 'react-router-dom';
 import './root.css';
 import axios from 'axios';
-import { NavBar } from './shared';
+import { NavBar, getDate } from './shared';
+import { Box, Stack, Container, Typography, Link, Paper } from "@mui/material"
 
 export async function loader(){
   const res = await axios.get('/list_articles')
@@ -10,17 +11,34 @@ export async function loader(){
 }
 
 
+function ArticleCard({article}) {
+  return (
+    <Paper variant='outlined'>
+      <Box padding={1} >
+        <Link href={'article/'+article.article_id}>{article.title}</Link>
+        <Stack direction='row'>
+          <Typography sx={{flexGrow:1}} color='GrayText'>{article.author}</Typography>
+          <Typography sx={{flexGrow:0}} color='GrayText'>{getDate(article.creation_date)}</Typography>
+        </Stack>
+      </Box>
+    </Paper>
+  );
+}
+
 export default function Root() {
-  const data = useLoaderData();
+  const articles = useLoaderData();
 
   return (
     <div>
       <NavBar />
-      {data.map((e, index)=>{
-        return <div key={index}>
-          <p>{e.title} - {e.author} - {e.article_id}</p>
-        </div>;
-      })}
+      <Container maxWidth='sm'>
+        <Stack mt={1} spacing={1}>
+          {articles.map((article, index)=>{
+            return <ArticleCard key={index} article={article} />
+          })}
+        </Stack>
+      </Container>
+
     </div>
   );
 }
