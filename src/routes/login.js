@@ -1,4 +1,4 @@
-import { Button, TextField, Typography } from "@mui/material";
+import { Button, TextField, Typography, Container, Stack } from "@mui/material";
 import axios from "axios";
 import { useState } from "react";
 import { redirect, useNavigate } from "react-router-dom";
@@ -26,13 +26,16 @@ export default function Login() {
   const navigate = useNavigate();
 
   return (
-    <div className='Center'>
-
-      <TextField label='Username' onChange={(event)=>setUser(event.target.value)} />
-      <TextField label='Password' onChange={(event)=>setPass(event.target.value)} />
-      <Button variant='contained' onClick={()=>login(user, pass, ()=>navigate(-1))} >Submit</Button>
-      <Typography>Don't have an account?</Typography>
-      <Button variant='contained'>Sign up</Button>
+    <div>
+      <Container >
+        <Stack marginTop={4} spacing={1} alignItems='center' >
+          <TextField label='Username' onChange={(event)=>setUser(event.target.value)} />
+          <TextField label='Password' onChange={(event)=>setPass(event.target.value)} />
+          <Button sx={{flexGrow:0}} variant='contained' onClick={()=>login(user, pass, ()=>navigate(-1))} >Submit</Button>
+          <Typography>Don't have an account?</Typography>
+          <Button variant='contained'>Sign up</Button>
+        </Stack>
+      </Container>
     </div>
   );
 }
