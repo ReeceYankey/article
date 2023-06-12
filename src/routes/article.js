@@ -19,7 +19,17 @@ function epochToString(seconds) {
   return (new Date(seconds*1000)).toDateString();
 }
 
-function CommentSection({comments}) {
+function CommentSection({article_id}) {
+  const [comments, setComments] = useState([]);
+
+  useEffect(()=>{
+    const temp = async () => {
+      const com = await fetchComments(article_id);
+      setComments(com);
+    }
+    temp();
+  },[article_id]);
+
   return (
     <div>
       <h2>Comments</h2>
@@ -34,15 +44,6 @@ function CommentSection({comments}) {
 
 export default function Article() {
   const article = useLoaderData();
-  const [comments, setComments] = useState([]);
-
-  useEffect(()=>{
-    const temp = async () => {
-      const com = await fetchComments(article.article_id);
-      setComments(com);
-    }
-    temp();
-  },[]);
 
   return (
     <div className="App">
@@ -50,7 +51,7 @@ export default function Article() {
       <div>By: {article.author}</div>
       <p> {epochToString(article.creation_date)} </p>
       <p> {article.content} </p>
-      <CommentSection comments={comments}/>
+      <CommentSection article_id={article.article_id} />
     </div>
   );
 }
