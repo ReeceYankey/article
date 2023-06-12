@@ -48,6 +48,7 @@ def login():
 @app.route("/create_user", methods=['POST'])
 @jwt_required(optional=True)
 def create_user():
+    # TODO constrain allowed usernames/passwords
     data = request.get_json()
     if not has_keys(data, ['username', 'password']):
         return jsonify({"msg": "Missing username and/or password"}), 400
@@ -161,6 +162,7 @@ def post_article():
 @app.route("/delete_article", methods=['DELETE'])
 @jwt_required()
 def delete_article():
+    # TODO remove associated comments
     data = request.get_json()
     if 'article_id' not in data:
         return jsonify({"msg": "Missing article id"}), 400
