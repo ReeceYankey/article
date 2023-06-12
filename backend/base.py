@@ -48,12 +48,15 @@ def login():
 @app.route("/create_user", methods=['POST'])
 @jwt_required(optional=True)
 def create_user():
-    # TODO constrain allowed usernames/passwords
+    # TODO regex for allowed usernames/passwords
     data = request.get_json()
     if not has_keys(data, ['username', 'password']):
         return jsonify({"msg": "Missing username and/or password"}), 400
     username = data['username']
     password = data['password']
+
+    if username == "" or password == "":
+        return jsonify({"msg": "Missing username and/or password"}), 400
     
     if users.find_one({"username":username}):
         return jsonify({"msg": "Username taken"}), 409

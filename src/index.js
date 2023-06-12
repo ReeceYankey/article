@@ -6,6 +6,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Root, {loader as rootLoader} from './routes/root';
 import Article, {loader as articleLoader} from './routes/article'
 import Login from './routes/login';
+import Signup from './routes/signup';
 
 // TODO add error page
 const router = createBrowserRouter([
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <Login />,
+  },
+  {
+    path: "/signup",
+    element: <Signup />,
   },
 ]);
 
