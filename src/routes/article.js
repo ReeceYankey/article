@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { AppBar, Box, Button, Container, Toolbar, Typography, TextField, Stack, Divider } from '@mui/material';
 import { NavBar } from './shared';
+import { getDate, getTime } from './shared';
 
 export async function loader({params}) {
   const res = await axios.get('/get_article/' + params.article_id);
@@ -17,13 +18,6 @@ async function fetchComments(article_id) {
   return res.data;
 }
 
-function getDate(seconds) {
-  return (new Date(seconds*1000)).toLocaleDateString();
-}
-
-function getTime(seconds) {
-  return (new Date(seconds*1000)).toLocaleString(undefined, {year:"numeric", month:"numeric", day:"numeric", "hour":"numeric", minute:"numeric"});
-}
 
 function CommentSection({article_id}) {
   const [comments, setComments] = useState([]);

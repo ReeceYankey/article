@@ -1,6 +1,14 @@
 import { AppBar, Box, Toolbar, Typography } from "@mui/material";
 import { useState } from "react";
 
+export function getDate(seconds) {
+  return (new Date(seconds*1000)).toLocaleDateString();
+}
+
+export function getTime(seconds) {
+  return (new Date(seconds*1000)).toLocaleString(undefined, {year:"numeric", month:"numeric", day:"numeric", "hour":"numeric", minute:"numeric"});
+}
+
 export function NavBar() {
   const [username, setUsername] = useState(JSON.parse(sessionStorage.getItem('username')));
 
