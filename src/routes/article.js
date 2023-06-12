@@ -1,4 +1,4 @@
-import { useLoaderData } from 'react-router-dom';
+import { redirect, useLoaderData, useNavigate } from 'react-router-dom';
 import './root.css';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
@@ -28,6 +28,7 @@ function getTime(seconds) {
 function CommentSection({article_id}) {
   const [comments, setComments] = useState([]);
   const [newCommentText, setNewCommentText] = useState("");
+  const navigate = useNavigate();
 
   async function refreshComments() {
       const com = await fetchComments(article_id);
@@ -41,6 +42,10 @@ function CommentSection({article_id}) {
   const submitComment = () => {
     const temp = async () => {
       const token = JSON.parse(sessionStorage.getItem('access_token'));
+      if (!token) {
+        navigate('/login');
+        return;
+      }
       console.log(token);
       const res = await axios.post('/post_comment', {article_id: article_id, content: newCommentText},{
         headers:{

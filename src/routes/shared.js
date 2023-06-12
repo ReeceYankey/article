@@ -1,6 +1,16 @@
 import { AppBar, Box, Toolbar, Typography } from "@mui/material";
+import { useState } from "react";
 
 export function NavBar() {
+  const [username, setUsername] = useState(JSON.parse(sessionStorage.getItem('username')));
+
+  function logOutClicked() {
+    sessionStorage.removeItem('username');
+    sessionStorage.removeItem('access_token');
+    setUsername();
+    // TODO send logout to backend so it can blacklist token
+  }
+  
   return (
     <AppBar position="static">
       <Toolbar>
@@ -16,14 +26,32 @@ export function NavBar() {
           </Typography>
         </Box>
         <Box sx={{flexGrow:0}}>
-          <Typography variant='h6' component='a' href="/login" 
-            sx={{
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
-          >
-            Log in
-          </Typography>
+          {!username && 
+            <Typography variant='h6' component='a' href="/login" 
+              sx={{
+                color: 'inherit',
+                textDecoration: 'none',
+              }}
+            >
+              Log in
+            </Typography>
+          }
+          {username && 
+            <Box display='flex'>
+              <Typography variant='h6' sx={{mr:3, flexGrow:0}}>
+                Hello {username}!
+              </Typography>
+              <Typography variant='h6' onClick={logOutClicked}
+                sx={{
+                  flexGrow:0,
+                  color: 'inherit',
+                  textDecoration: 'none',
+                }}
+              >
+                Log out
+              </Typography>
+            </Box>
+          }
         </Box>
       </Toolbar>
     </AppBar>

@@ -13,6 +13,7 @@ async function login(username, password) {
   try {
     const res = await axios.post('/login', {username: username, password: password});
     sessionStorage.setItem('access_token', JSON.stringify(res.data.access_token));
+    sessionStorage.setItem('username', JSON.stringify(res.data.username));
     console.log("Login success");
     return true;
   } catch (error) {
