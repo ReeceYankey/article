@@ -19,6 +19,14 @@ articles = db['articles']
 users = db['users']
 comments = db['comments']
 
+# TODO potential api call ideas for the future
+# logout
+# delete_user
+# change_password
+# delete_comment
+# edit_comment
+# edit_article
+
 def has_keys(dictionary, required_keys):
     """returns whether dictionary contains all of the required keys"""
     for key in required_keys:
