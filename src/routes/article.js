@@ -1,5 +1,4 @@
 import { redirect, useLoaderData, useNavigate } from 'react-router-dom';
-import './root.css';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { AppBar, Box, Button, Container, Toolbar, Typography, TextField, Stack, Divider } from '@mui/material';

@@ -1,5 +1,4 @@
 import { useLoaderData } from 'react-router-dom';
-import './root.css';
 import axios from 'axios';
 import { NavBar, getDate } from './shared';
 import { Box, Stack, Container, Typography, Link, Paper } from "@mui/material"
