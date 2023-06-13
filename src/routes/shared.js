@@ -10,7 +10,7 @@ export function getTime(seconds) {
 }
 
 export function NavBar() {
-  const [username, setUsername] = useState(JSON.parse(sessionStorage.getItem('username')));
+  const [username, setUsername] = useState(sessionStorage.getItem('username'));
 
   function logOutClicked() {
     sessionStorage.removeItem('username');

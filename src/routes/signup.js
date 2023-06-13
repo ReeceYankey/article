@@ -7,7 +7,6 @@ async function signup(username, password) {
   // console.log(username+" "+password);
   try {
     const res = await axios.post('/create_user', {username: username, password: password});
-    sessionStorage.setItem('access_token', JSON.stringify(res.data.access_token));
     console.log("Signup success");
     return true;
   } catch (error) {

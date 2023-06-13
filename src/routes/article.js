@@ -35,7 +35,7 @@ function CommentSection({article_id}) {
 
   const submitComment = () => {
     const temp = async () => {
-      const token = JSON.parse(sessionStorage.getItem('access_token'));
+      const token = sessionStorage.getItem('access_token');
       if (!token) {
         navigate('/login');
         return;
