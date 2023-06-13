@@ -21,6 +21,12 @@ def create(username, password, priv):
     print(f"created {username}")
 
 @cli.command()
+def list():
+    users = MongoClient('localhost', 27017)['article_db']['users']
+    for user in users.find():
+        print(user['username'])
+
+@cli.command()
 @click.argument("username")
 @click.argument("privilege")
 def modify(username, privilege):
