@@ -80,6 +80,7 @@ function CommentSection({article_id}) {
 
 export default function Article() {
   const article = useLoaderData();
+  const paragraphs = article.content.split("\n");
 
   return (
     <div >
@@ -88,7 +89,13 @@ export default function Article() {
         <Typography marginTop={4} fontSize={40} variant='h1'>{article.title}</Typography>
         <Typography marginTop={1} color='GrayText' >Author: {article.author}</Typography>
         <Typography color='GrayText'>{getDate(article.creation_date)}</Typography>
-        <Typography marginTop={1} fontSize={20} variant='body1'>{article.content}</Typography>
+        <Stack spacing={2}>
+          {paragraphs.map((paragraph, index)=>{
+            return (
+              <Typography key={index} marginTop={1} fontSize={20} variant='body1'>{paragraph}</Typography>
+            );
+          })}
+        </Stack>
         <CommentSection article_id={article.article_id} />
       </Container>
     </div>
