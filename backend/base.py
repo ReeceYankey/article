@@ -79,7 +79,7 @@ def create_user():
 
     Response:
         data: {
-            msg: message describing success or reason for failure
+            msg (str): message describing success or reason for failure
         }
     """
     # TODO regex for allowed usernames/passwords
@@ -125,7 +125,7 @@ def post_comment():
 
     Response:
         data: {
-            msg: message describing success or reason for failure
+            msg (str): message describing success or reason for failure
         }
     """ 
     username = get_jwt_identity()
@@ -149,16 +149,16 @@ def get_comments():
 
     Input:
         data: {
-            article_id: id of the article
+            article_id (str): id of the article
         }
 
     Response:
         data: List [
             {
-                comment_id: id of the comment
-                article_id: id of the article
-                creation_date: seconds since epoch
-                content: body of the comment
+                comment_id (str): id of the comment
+                article_id (str): id of the article
+                content (str): body of the comment
+                creation_date (int): seconds since epoch
             }
         ]
         
@@ -184,11 +184,11 @@ def get_article(article_id):
     Response:
         data: List [
             { 
-                article_id: id of the article
-                title: title of the article
-                content: body of the article
-                author: username of whomever created this article
-                creation_date: seconds since epoch
+                article_id (str): id of the article
+                title (str): title of the article
+                content (str): body of the article
+                author (str): username of whomever created this article
+                creation_date (int): seconds since epoch
             }
         ]
     """ 
@@ -212,10 +212,10 @@ def list_articles():
     Response:
         data: List [
             {
-                article_id: id of the article
-                title: title of the article
-                author: username of whomever created this article
-                creation_date: seconds since epoch
+                article_id (str): id of the article
+                title (str): title of the article
+                author (str): username of whomever created this article
+                creation_date (int): seconds since epoch
             }
         ]
     """ 
@@ -242,8 +242,8 @@ def post_article():
             Authorization: Bearer {token}
         }
         data: {
-            title: the title of the article
-            content: the body of the article
+            title (str): the title of the article
+            content (str): the body of the article
         }
 
     Response:
@@ -281,12 +281,12 @@ def delete_article():
             Authorization: Bearer {token}
         }
         data: {
-            article_id: the id of the article to delete
+            article_id (str): the id of the article to delete
         }
 
     Response:
         data: {
-            msg: string indicating success or reason for failure
+            msg (str): string indicating success or reason for failure
         }
     """
     data = request.get_json()
