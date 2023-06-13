@@ -3,11 +3,6 @@ import axios from "axios";
 import { useState } from "react";
 import { redirect, useNavigate } from "react-router-dom";
 
-function getToken() {
-  const token = sessionStorage.getItem('access_token');
-  return token;
-} 
-
 async function signup(username, password) {
   // console.log(username+" "+password);
   try {
@@ -19,9 +14,6 @@ async function signup(username, password) {
     console.log("Failed signup: "+error);
     console.log(error);
     return false;
-    // if (error.response.request.status === 409) {
-    //   return false;
-    // }
   }
 }
 

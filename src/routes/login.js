@@ -3,11 +3,6 @@ import axios from "axios";
 import { useState } from "react";
 import { redirect, useNavigate } from "react-router-dom";
 
-function getToken() {
-  const token = sessionStorage.getItem('access_token');
-  return token;
-} 
-
 async function login(username, password) {
   // console.log(username+" "+password);
   try {
