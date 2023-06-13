@@ -98,7 +98,7 @@ def get_comments():
         return jsonify({"msg": "Missing article id"}), 400
     article_id = data['article_id']
 
-    matching_comments = list(comments.find({"article_id":article_id}))
+    matching_comments = list(comments.find({"article_id":article_id}).sort('creation_date', pymongo.DESCENDING))
     for comment in matching_comments:
         comment['comment_id'] = str(comment.pop('_id'))
 
