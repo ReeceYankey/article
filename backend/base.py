@@ -20,6 +20,7 @@ users = db['users']
 comments = db['comments']
 
 def has_keys(dictionary, required_keys):
+    """returns whether dictionary contains all of the required keys"""
     for key in required_keys:
         if key not in dictionary:
             return False
@@ -27,6 +28,21 @@ def has_keys(dictionary, required_keys):
 
 @app.route("/login", methods=['POST'])
 def login():
+    """
+    Gives the user a jwt token upon successful login
+
+    Input:
+        data: {
+            username (str): your username
+            password (str): your password
+        }
+
+    Response:
+        data: {
+            access_token (str): the jwt token
+            msg (str): message describing reason for failure
+        }
+    """ 
     data = request.get_json()
     if not has_keys(data, ['username', 'password']):
         return jsonify({"msg": "Missing username and/or password"}), 400
@@ -41,13 +57,31 @@ def login():
         return jsonify({"msg": "Bad username or password"}), 401
 
     access_token = create_access_token(identity=username, expires_delta=timedelta(hours=12))
-    return jsonify(username=username, access_token=access_token), 200
+    return jsonify(access_token=access_token), 200
 
 
 
 @app.route("/create_user", methods=['POST'])
 @jwt_required(optional=True)
 def create_user():
+    """
+    Creates a new user with the given username and password
+
+    Input:
+        headers: {
+            (optional) Authorization: Bearer {token}
+        }
+        data: {
+            username (str): your username
+            password (str): your password
+            (optional) privilege: number indicating privilege level of the new user. Must be level 2 to work
+        }
+
+    Response:
+        data: {
+            msg: message describing success or reason for failure
+        }
+    """
     # TODO regex for allowed usernames/passwords
     data = request.get_json()
     if not has_keys(data, ['username', 'password']):
@@ -77,6 +111,23 @@ def create_user():
 @app.route("/post_comment", methods=['POST'])
 @jwt_required()
 def post_comment():
+    """
+    Post a comment as the user associated with the given JWT token
+
+    Input:
+        headers: {
+            Authorization: Bearer {token}
+        }
+        data: {
+            content (str): the content/body of the comment
+            article_id (str): the article_id you are commenting on
+        }
+
+    Response:
+        data: {
+            msg: message describing success or reason for failure
+        }
+    """ 
     username = get_jwt_identity()
 
     data = request.get_json()
@@ -93,6 +144,25 @@ def post_comment():
 
 @app.route("/get_comments", methods=['POST'])
 def get_comments():
+    """
+    Retrieves all comments for the given article
+
+    Input:
+        data: {
+            article_id: id of the article
+        }
+
+    Response:
+        data: List [
+            {
+                comment_id: id of the comment
+                article_id: id of the article
+                creation_date: seconds since epoch
+                content: body of the comment
+            }
+        ]
+        
+    """ 
     data = request.get_json()
     if 'article_id' not in data:
         return jsonify({"msg": "Missing article id"}), 400
@@ -108,11 +178,20 @@ def get_comments():
 
 @app.route("/get_article/<article_id>", methods=['GET'])
 def get_article(article_id):
-    # data = request.get_json()
-    # if 'article_id' not in data:
-    #     return jsonify({"msg": "Missing article id"}), 400
-    # article_id = data['article_id']
+    """
+    Retrieves all data associated with the given article
 
+    Response:
+        data: List [
+            { 
+                article_id: id of the article
+                title: title of the article
+                content: body of the article
+                author: username of whomever created this article
+                creation_date: seconds since epoch
+            }
+        ]
+    """ 
     try:
         id = ObjectId(article_id)
     except(InvalidId):
@@ -127,6 +206,19 @@ def get_article(article_id):
 
 @app.route("/list_articles", methods=['GET'])
 def list_articles():
+    """
+    Retrieves a list of all articles with their basic information
+
+    Response:
+        data: List [
+            {
+                article_id: id of the article
+                title: title of the article
+                author: username of whomever created this article
+                creation_date: seconds since epoch
+            }
+        ]
+    """ 
     # TODO add range request
     all_articles = list(articles.find().sort('creation_date', pymongo.DESCENDING))
     for article in all_articles:
@@ -142,6 +234,22 @@ def list_articles():
 @app.route("/post_article", methods=['POST'])
 @jwt_required()
 def post_article():
+    """
+    Saves a new article to the database. The user must be of sufficient privilege (1 or above)
+
+    Input:
+        headers: {
+            Authorization: Bearer {token}
+        }
+        data: {
+            title: the title of the article
+            content: the body of the article
+        }
+
+    Response:
+        data:
+            msg (str): a string indicating success with the id created for the article
+    """ 
     # TODO image support
     username = get_jwt_identity()
     user = users.find_one({"username":username})
@@ -159,13 +267,28 @@ def post_article():
     seconds_since_epoch = int(time.time())
 
     id = articles.insert_one({"author":username, "title":title, "content":content, "creation_date":seconds_since_epoch}).inserted_id
-    return jsonify(f"Successfully posted article with id {id}"), 200
+    return jsonify(msg=f"Successfully posted article with id {id}"), 200
 
 
 @app.route("/delete_article", methods=['DELETE'])
 @jwt_required()
 def delete_article():
-    # TODO remove associated comments
+    """
+    Deletes the given article. Need to be the author or privilege level 2 (admin).
+
+    Input:
+        headers: {
+            Authorization: Bearer {token}
+        }
+        data: {
+            article_id: the id of the article to delete
+        }
+
+    Response:
+        data: {
+            msg: string indicating success or reason for failure
+        }
+    """
     data = request.get_json()
     if 'article_id' not in data:
         return jsonify({"msg": "Missing article id"}), 400
@@ -187,4 +310,5 @@ def delete_article():
         return jsonify({"msg": "Insufficient permissions"}), 403
     
     articles.delete_one({"_id":ObjectId(article_id)})
-    return "Article successfully deleted", 200
+    comments.delete_many({"article_id":article_id})
+    return jsonify(msg="Article successfully deleted"), 200
