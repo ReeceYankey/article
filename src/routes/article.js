@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Box, Button, Container, Typography, TextField, Stack, Divider } from '@mui/material';
 import { NavBar } from './shared';
-import { getDate, getTime } from './shared';
+import { formatArticleDate, formatCommentDate } from './shared';
 
 export async function loader({params}) {
   const res = await axios.get('/get_article/' + params.article_id);
@@ -65,7 +65,7 @@ function CommentSection({article_id}) {
           return <Box paddingX={1} key={index} sx={{wordWrap: 'break-word'}} maxWidth='100%'>
             {/* <p>{comment.author} - {comment.content}</p> */}
             <Typography><b>{comment.author}</b></Typography>
-            <Typography color='GrayText'>{getTime(comment.creation_date)}</Typography>
+            <Typography color='GrayText'>{formatCommentDate(comment.creation_date)}</Typography>
             <Typography mb={1}>{comment.content}</Typography>
             <Divider />
           </Box>;
@@ -87,7 +87,7 @@ export default function Article() {
       <Container  maxWidth='sm' >
         <Typography marginTop={4} fontSize={40} variant='h1'>{article.title}</Typography>
         <Typography marginTop={1} color='GrayText' >Author: {article.author}</Typography>
-        <Typography color='GrayText'>{getDate(article.creation_date)}</Typography>
+        <Typography color='GrayText'>{formatArticleDate(article.creation_date)}</Typography>
         <Stack spacing={2}>
           {paragraphs.map((paragraph, index)=>{
             return (

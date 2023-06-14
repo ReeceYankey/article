@@ -1,11 +1,11 @@
 import { AppBar, Box, Toolbar, Typography } from "@mui/material";
 import { useState } from "react";
 
-export function getDate(seconds) {
+export function formatArticleDate(seconds) {
   return (new Date(seconds*1000)).toLocaleDateString();
 }
 
-export function getTime(seconds) {
+export function formatCommentDate(seconds) {
   return (new Date(seconds*1000)).toLocaleString(undefined, {year:"numeric", month:"numeric", day:"numeric", "hour":"numeric", minute:"numeric"});
 }
 

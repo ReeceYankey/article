@@ -1,6 +1,6 @@
 import { useLoaderData } from 'react-router-dom';
 import axios from 'axios';
-import { NavBar, getDate } from './shared';
+import { NavBar, formatArticleDate } from './shared';
 import { Box, Stack, Container, Typography, Link, Paper } from "@mui/material"
 
 export async function loader(){
@@ -17,7 +17,7 @@ function ArticleCard({article}) {
         <Link href={'article/'+article.article_id}>{article.title}</Link>
         <Stack direction='row'>
           <Typography sx={{flexGrow:1}} color='GrayText'>{article.author}</Typography>
-          <Typography sx={{flexGrow:0}} color='GrayText'>{getDate(article.creation_date)}</Typography>
+          <Typography sx={{flexGrow:0}} color='GrayText'>{formatArticleDate(article.creation_date)}</Typography>
         </Stack>
       </Box>
     </Paper>
