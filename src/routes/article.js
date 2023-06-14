@@ -57,7 +57,12 @@ function CommentSection({article_id}) {
     <div>
       <h2>Comments</h2>
       <Stack direction='row'>
-        <TextField sx={{flexGrow:1}} multiline value={newCommentText} onChange={(event)=>setNewCommentText(event.target.value)} />
+        <TextField 
+          sx={{flexGrow:1}} 
+          multiline 
+          value={newCommentText} 
+          onChange={(event)=>setNewCommentText(event.target.value)} 
+        />
         <Button sx={{flexGrow:0}} onClick={submitComment}>Submit</Button>
       </Stack>
       <Stack marginY={1} spacing={1}>
@@ -85,13 +90,13 @@ export default function Article() {
     <div >
       <NavBar />
       <Container  maxWidth='sm' >
-        <Typography marginTop={4} fontSize={40} variant='h1'>{article.title}</Typography>
-        <Typography marginTop={1} color='GrayText' >Author: {article.author}</Typography>
+        <Typography mt={4} fontSize={40} variant='h1'>{article.title}</Typography>
+        <Typography mt={1} color='GrayText' >Author: {article.author}</Typography>
         <Typography color='GrayText'>{formatArticleDate(article.creation_date)}</Typography>
         <Stack spacing={2}>
           {paragraphs.map((paragraph, index)=>{
             return (
-              <Typography key={index} marginTop={1} fontSize={20} variant='body1'>{paragraph}</Typography>
+              <Typography key={index} mt={1} fontSize={20} variant='body1'>{paragraph}</Typography>
             );
           })}
         </Stack>
