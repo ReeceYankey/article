@@ -36,7 +36,7 @@ export default function Login() {
     <div>
       <Stack marginTop={4} spacing={1} alignItems='center' >
         <TextField error={err} autoFocus label='Username' onChange={(event)=>{setUser(event.target.value);setErr(false)}} />
-        <TextField error={err} label='Password' onChange={(event)=>{setPass(event.target.value);setErr(false)}} />
+        <TextField error={err} label='Password' type='password' onChange={(event)=>{setPass(event.target.value);setErr(false)}} />
         <Button variant='contained' onClick={()=>onButtonClick()} >Submit</Button>
         <Typography >Don't have an account?</Typography>
         <Button href="/signup" variant='contained'>Sign up</Button>
